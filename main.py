@@ -65,21 +65,21 @@ def setText_norefresh(text):
     count = 0
     row = 0
     
-    rows = text.split("\n")
-    for i in range(len(rows)):
-        while len(rows[i]) < MAX_CHAR_PER_LINE: #clears the rest of the screen
-            rows[i] += ' '
+#    rows = text.split("\n")
+#    for i in range(len(rows)):
+#        while len(rows[i]) < MAX_CHAR_PER_LINE: #clears the rest of the screen
+#            rows[i] += ' '
     
-    text = ""
-    if len(rows) > 1:
-        for row in rows:
-            text = text + row + " "
-    else:
-        text = rows[0]
+#    text = ""
+#    if len(rows) > 1:
+#        for row in rows:
+#            text = text + row + " "
+#    else:
+#        text = rows[0]
         
-    if len(text) < MAX_CHAR_PER_LINE:
-        while len(text) < MAX_CHAR_PER_LINE:
-            text += ' '
+#    if len(text) < MAX_CHAR_PER_LINE:
+#        while len(text) < MAX_CHAR_PER_LINE:
+#            text += ' '
             
     for c in text:
         if c == '\n' or count == MAX_CHAR_PER_LINE:
@@ -149,7 +149,21 @@ def getTemperatureString(t):
     
 def getFactPrintedText(text):
     return fillString(text, to_nb_char=32)
-    
+
+def printFact(fact, button):
+    for i in range(len(fact)+1-MAX_CHAR_PER_LINE):
+        if not button.showFact:
+            break
+        else:
+            last_index = i+MAX_CHAR_PER_LINE
+            text = getFactPrintedText(fact[i:last_index])
+            
+            setText_norefresh(text)
+            
+            if (i >= len(fact)-MAX_CHAR_PER_LINE):
+                sleep(2)
+            else:
+                sleep(0.2)
 
 def main():
     counter = 0
@@ -190,19 +204,7 @@ def main():
             while button.showFact:
                 setRGB(0,0,0)
                 fact = fun_facts[random.randint(0,len(fun_facts)-1)]
-                for i in range(len(fact)+1-MAX_CHAR_PER_LINE):
-                    if not button.showFact:
-                        break
-                    else:
-                        last_index = i+MAX_CHAR_PER_LINE
-                        text = getFactPrintedText(fact[i:last_index])
-                        
-                        setText_norefresh(text)
-                        
-                        if (i >= len(fact)-MAX_CHAR_PER_LINE):
-                            sleep(2)
-                        else:
-                            sleep(0.2)
+                printFact(fact, button)
     
 
 if __name__ == "__main__":
